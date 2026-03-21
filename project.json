@@ -1,0 +1,39 @@
+{
+  "description": "AC Milan — La Storia dei Rossoneri. Animated wallpaper celebrating AC Milan's glorious history from the 1980s onwards. Features classic squad photos, honors timeline, gold particle effects, and audio-reactive visualizer. Forza Milan!",
+  "file": "index.html",
+  "general": {
+    "properties": {
+      "schemecolor": {
+        "order": 0,
+        "text": "ui_browse_properties_scheme_color",
+        "type": "color",
+        "value": "0.06 0.06 0.06"
+      },
+      "accentcolor": {
+        "order": 1,
+        "text": "Gold Accent Color",
+        "type": "color",
+        "value": "0.79 0.66 0.30"
+      },
+      "particledensity": {
+        "order": 2,
+        "text": "Gold Particle Density",
+        "type": "slider",
+        "value": 60,
+        "min": 10,
+        "max": 200
+      }
+    },
+    "supportsaudioprocessing": true
+  },
+  "preview": "preview.jpg",
+  "tags": [
+    "Sports",
+    "Football",
+    "AC Milan",
+    "Abstract"
+  ],
+  "title": "AC Milan — La Storia dei Rossoneri",
+  "type": "web",
+  "version": 1
+}

@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<!-- saved from url=(0045)file:///C:/Users/59826/Downloads/index_3.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap');
+
+  :root {
+    --rosso: #c4161c;
+    --nero: #1a1a1a;
+    --oro: #c9a84c;
+    --oro-chiaro: #e8d48b;
+    --oro-scuro: #8a6d2b;
+    --bianco: #f5f0e8;
+    --bg-deep: #0a0a0a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    width: 100%; height: 100%;
+    overflow: hidden;
+    background: var(--bg-deep);
+    font-family: 'Cinzel', serif;
+    color: var(--bianco);
+  }
+
+  /* === RED-BLACK STRIPED BACKGROUND === */
+  .stripes-bg {
+    position: fixed; inset: 0; z-index: 0;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--nero) 0px,
+      var(--nero) calc(100vw / 14),
+      var(--rosso) calc(100vw / 14),
+      var(--rosso) calc(100vw / 7)
+    );
+    opacity: 0.12;
+  }
+
+  /* === DARK VIGNETTE OVERLAY === */
+  .vignette {
+    position: fixed; inset: 0; z-index: 1;
+    background: radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.85) 100%);
+    pointer-events: none;
+  }
+
+  /* === GOLD PARTICLE CANVAS === */
+  #particleCanvas {
+    position: fixed; inset: 0; z-index: 2;
+    width: 100vw; height: 100vh;
+    pointer-events: none;
+  }
+
+  /* === MAIN LAYOUT — 60% photo / 40% honors === */
+  .main-container {
+    position: relative; z-index: 3;
+    width: 100vw; height: 100vh;
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas:
+      "header header"
+      "photos honors"
+      "footer footer";
+    gap: 0;
+  }
+
+  /* === HEADER === */
+  .header {
+    grid-area: header;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.8vh 4vw;
+    gap: 2vw;
+  }
+
+  .badge-container {
+    width: clamp(50px, 7vh, 110px);
+    height: clamp(50px, 7vh, 110px);
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .badge-container img {
+    width: 100%; height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 0 20px rgba(201, 168, 76, 0.5));
+    animation: badgePulse 4s ease-in-out infinite;
+  }
+
+  .badge-placeholder {
+    width: 100%; height: 100%;
+    border-radius: 50%;
+    border: 3px solid var(--oro);
+    display: flex; align-items: center; justify-content: center;
+    background: radial-gradient(circle, rgba(201,168,76,0.15), transparent);
+    font-size: clamp(8px, 1.2vh, 14px);
+    color: var(--oro);
+    text-align: center;
+    line-height: 1.2;
+    animation: badgePulse 4s ease-in-out infinite;
+  }
+
+  @keyframes badgePulse {
+    0%, 100% { filter: drop-shadow(0 0 15px rgba(201,168,76,0.4)); }
+    50% { filter: drop-shadow(0 0 35px rgba(201,168,76,0.8)); }
+  }
+
+  .title-block { text-align: center; }
+
+  .title-main {
+    font-size: clamp(20px, 3.8vh, 52px);
+    font-weight: 900;
+    letter-spacing: 0.3em;
+    color: var(--oro);
+    text-shadow: 0 0 30px rgba(201,168,76,0.4), 0 2px 4px rgba(0,0,0,0.8);
+    text-transform: uppercase;
+  }
+
+  .title-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(10px, 1.5vh, 20px);
+    font-style: italic;
+    color: var(--oro-chiaro);
+    letter-spacing: 0.5em;
+    opacity: 0.7;
+    margin-top: 0.5vh;
+  }
+
+  /* === GOLD DECORATIVE LINE === */
+  .gold-line {
+    width: 80%; height: 1px;
+    margin: 0 auto;
+    background: linear-gradient(90deg, transparent, var(--oro), transparent);
+    position: relative;
+  }
+  .gold-line::after {
+    content: '◆';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--oro);
+    font-size: clamp(8px, 1vh, 14px);
+    background: var(--bg-deep);
+    padding: 0 1vw;
+  }
+
+  /* === PHOTO CAROUSEL (LEFT — 60%) === */
+  .photo-section {
+    grid-area: photos;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2vh 2.5vw 2vh 3vw;
+    position: relative;
+  }
+
+  .photo-frame {
+    width: 96%;
+    height: 80%;
+    border: 2px solid var(--oro);
+    position: relative;
+    overflow: hidden;
+    box-shadow:
+      0 0 50px rgba(201,168,76,0.18),
+      inset 0 0 80px rgba(0,0,0,0.5);
+  }
+
+  .photo-frame::before,
+  .photo-frame::after {
+    content: '';
+    position: absolute;
+    z-index: 5;
+    pointer-events: none;
+  }
+  .photo-frame::before {
+    inset: 0;
+    border: 1px solid rgba(201,168,76,0.3);
+    margin: 6px;
+  }
+  .photo-frame::after {
+    inset: 0;
+    background: linear-gradient(180deg, transparent 55%, rgba(0,0,0,0.75) 100%);
+  }
+
+  .photo-slide {
+    position: absolute; inset: 0;
+    opacity: 0;
+    transition: opacity 1.5s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #111 0%, #1a0a0a 100%);
+  }
+  .photo-slide.active { opacity: 1; }
+  .photo-slide img { width: 100%; height: 100%; object-fit: contain; }
+
+  .photo-placeholder {
+    color: var(--oro);
+    font-size: clamp(11px, 1.6vh, 18px);
+    text-align: center;
+    opacity: 0.6;
+    padding: 2vw;
+    line-height: 1.6;
+  }
+
+  .photo-caption {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    z-index: 10;
+    padding: 2.5vh 2.5vw;
+    background: linear-gradient(transparent, rgba(0,0,0,0.92));
+    text-align: center;
+  }
+
+  .caption-year {
+    font-size: clamp(28px, 5vh, 64px);
+    font-weight: 900;
+    color: var(--oro);
+    text-shadow: 0 0 25px rgba(201,168,76,0.6);
+    line-height: 1;
+  }
+
+  .caption-desc {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(12px, 1.8vh, 22px);
+    color: var(--bianco);
+    opacity: 0.85;
+    margin-top: 0.6vh;
+    font-style: italic;
+  }
+
+  /* Photo progress dots */
+  .photo-dots {
+    display: flex;
+    gap: clamp(5px, 0.7vw, 12px);
+    margin-top: 1.5vh;
+  }
+  .dot {
+    width: clamp(7px, 0.9vh, 12px);
+    height: clamp(7px, 0.9vh, 12px);
+    border-radius: 50%;
+    border: 1px solid var(--oro);
+    background: transparent;
+    transition: all 0.5s ease;
+  }
+  .dot.active {
+    background: var(--oro);
+    box-shadow: 0 0 10px var(--oro);
+  }
+
+  /* === HONORS SECTION (RIGHT — 40%, bigger text) === */
+  .honors-section {
+    grid-area: honors;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 2vh 3vw 2vh 2vw;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .honors-title {
+    font-size: clamp(15px, 2.6vh, 30px);
+    color: var(--oro);
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    margin-bottom: 2vh;
+    text-align: center;
+  }
+
+  .honors-scroll-wrapper {
+    position: relative;
+    height: 60vh;
+    overflow: hidden;
+    mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 88%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 88%, transparent 100%);
+  }
+
+  .honors-track {
+    position: absolute;
+    width: 100%;
+    animation: scrollHonors var(--scroll-duration, 60s) linear infinite;
+  }
+
+  @keyframes scrollHonors {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-50%); }
+  }
+
+  .honor-item {
+    display: flex;
+    align-items: center;
+    gap: 1.2vw;
+    padding: 2vh 0;
+    border-bottom: 1px solid rgba(201,168,76,0.12);
+  }
+
+  .honor-icon {
+    font-size: clamp(22px, 3.5vh, 44px);
+    flex-shrink: 0;
+    width: clamp(34px, 5vh, 58px);
+    text-align: center;
+  }
+
+  .honor-details { flex: 1; }
+
+  .honor-name {
+    font-size: clamp(14px, 2.2vh, 24px);
+    color: var(--oro-chiaro);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+  }
+
+  .honor-years {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(11px, 1.6vh, 19px);
+    color: var(--bianco);
+    opacity: 0.55;
+    margin-top: 0.4vh;
+    line-height: 1.45;
+  }
+
+  .honor-count {
+    font-size: clamp(26px, 4.5vh, 56px);
+    font-weight: 900;
+    color: var(--oro);
+    text-shadow: 0 0 18px rgba(201,168,76,0.35);
+    flex-shrink: 0;
+    min-width: clamp(38px, 5vw, 72px);
+    text-align: right;
+  }
+
+  /* === FOOTER === */
+  .footer {
+    grid-area: footer;
+    padding: 1.2vh 4vw;
+    text-align: center;
+  }
+  .footer .gold-line { margin-bottom: 0.8vh; }
+  .footer-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(9px, 1.1vh, 14px);
+    color: var(--oro);
+    opacity: 0.5;
+    letter-spacing: 0.3em;
+    font-style: italic;
+  }
+
+  /* === AUDIO VISUALIZER BAR === */
+  #audioCanvas {
+    position: fixed;
+    bottom: 0; left: 0;
+    width: 100vw; height: 6vh;
+    z-index: 4;
+    pointer-events: none;
+    opacity: 0.4;
+  }
+
+  /* === RED GLOW ACCENTS === */
+  .glow-left, .glow-right {
+    position: fixed;
+    width: 30vw; height: 30vw;
+    border-radius: 50%;
+    filter: blur(100px);
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.08;
+  }
+  .glow-left {
+    background: var(--rosso);
+    bottom: -10vw; left: -10vw;
+    animation: glowPulseL 8s ease-in-out infinite;
+  }
+  .glow-right {
+    background: var(--rosso);
+    top: -10vw; right: -10vw;
+    animation: glowPulseR 10s ease-in-out infinite;
+  }
+  @keyframes glowPulseL {
+    0%, 100% { opacity: 0.06; transform: scale(1); }
+    50% { opacity: 0.14; transform: scale(1.1); }
+  }
+  @keyframes glowPulseR {
+    0%, 100% { opacity: 0.08; transform: scale(1); }
+    50% { opacity: 0.15; transform: scale(1.15); }
+  }
+
+  /* === CORNER ORNAMENTS === */
+  .corner {
+    position: fixed;
+    width: clamp(30px, 5vh, 60px);
+    height: clamp(30px, 5vh, 60px);
+    border-color: var(--oro);
+    border-style: solid;
+    z-index: 5;
+    opacity: 0.3;
+  }
+  .corner-tl { top: 2vh; left: 2vw; border-width: 2px 0 0 2px; }
+  .corner-tr { top: 2vh; right: 2vw; border-width: 2px 2px 0 0; }
+  .corner-bl { bottom: 2vh; left: 2vw; border-width: 0 0 2px 2px; }
+  .corner-br { bottom: 2vh; right: 2vw; border-width: 0 2px 2px 0; }
+</style>
+</head>
+<body>
+
+<!-- Background layers -->
+<div class="stripes-bg"></div>
+<div class="vignette"></div>
+<div class="glow-left"></div>
+<div class="glow-right"></div>
+<canvas id="particleCanvas" width="2040" height="1020"></canvas>
+
+<!-- Corner ornaments -->
+<div class="corner corner-tl"></div>
+<div class="corner corner-tr"></div>
+<div class="corner corner-bl"></div>
+<div class="corner corner-br"></div>
+
+<!-- Main content -->
+<div class="main-container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="badge-container" id="badgeContainer">
+      <div class="badge-placeholder" id="badgePlaceholder">AC<br>MILAN<br>1899</div>
+    </div>
+    <div class="title-block">
+      <div class="title-main">AC Milan</div>
+      <div class="title-sub">Associazione Calcio Milan · Founded 1899</div>
+    </div>
+    <div class="badge-container">
+      <div class="badge-placeholder" id="badgePlaceholder2">★<br>7 UCL</div>
+    </div>
+  </div>
+
+  <div class="gold-line"></div>
+
+  <!-- PHOTO CAROUSEL (60% width, larger frame) -->
+  <div class="photo-section">
+    <div class="photo-frame" id="photoFrame"><div class="photo-slide"><div class="photo-placeholder">📷<br>1988–89<br><small>Sacchi's Grande Milan — Gullit, Van Basten, Rijkaard</small><br><br><small style="opacity:0.4">Place photo in photos/ folder<br>Filename: 1988-89.jpg</small></div><div class="photo-caption"><div class="caption-year">1988–89</div><div class="caption-desc">Sacchi's Grande Milan — Gullit, Van Basten, Rijkaard</div></div></div><div class="photo-slide"><div class="photo-placeholder">📷<br>1989–90<br><small>Back-to-back European Cup Champions</small><br><br><small style="opacity:0.4">Place photo in photos/ folder<br>Filename: 1989-90.jpg</small></div><div class="photo-caption"><div class="caption-year">1989–90</div><div class="caption-desc">Back-to-back European Cup Champions</div></div></div><div class="photo-slide active"><div class="photo-placeholder">📷<br>1993–94<br><small>The Athens Final — 4-0 vs Barcelona</small><br><br><small style="opacity:0.4">Place photo in photos/ folder<br>Filename: 1993-94.jpg</small></div><div class="photo-caption"><div class="caption-year">1993–94</div><div class="caption-desc">The Athens Final — 4-0 vs Barcelona</div></div></div><div class="photo-slide"><div class="photo-placeholder">📷<br>1995–96<br><small>Capello's Invincibles</small><br><br><small style="opacity:0.4">Place photo in photos/ folder<br>Filename: 1995-96.jpg</small></div><div class="photo-caption"><div class="caption-year">1995–96</div><div class="caption-desc">Capello's Invincibles</div></div></div><div class="photo-slide"><div class="photo-placeholder">📷<br>2002–03<br><small>Old Trafford — Shevchenko, Pirlo, Maldini</small><br><br><small style="opacity:0.4">Place photo in photos/ folder<br>Filename: 2002-03.jpg</small></div><div class="photo-caption"><div class="caption-year">2002–03</div><div class="caption-desc">Old Trafford — Shevchenko, Pirlo, Maldini</div></div></div><div class="photo-slide"><div class="photo-placeholder">📷<br>2006–07<br><small>Revenge in Athens — Inzaghi's Brace</small><br><br><small style="opacity:0.4">Place photo in photos/ folder<br>Filename: 2006-07.jpg</small></div><div class="photo-caption"><div class="caption-year">2006–07</div><div class="caption-desc">Revenge in Athens — Inzaghi's Brace</div></div></div><div class="photo-slide"><div class="photo-placeholder">📷<br>2010–11<br><small>Allegri's Scudetto — Ibrahimovic &amp; Thiago Silva</small><br><br><small style="opacity:0.4">Place photo in photos/ folder<br>Filename: 2010-11.jpg</small></div><div class="photo-caption"><div class="caption-year">2010–11</div><div class="caption-desc">Allegri's Scudetto — Ibrahimovic &amp; Thiago Silva</div></div></div><div class="photo-slide"><div class="photo-placeholder">📷<br>2021–22<br><small>The Return — Pioli's Title after 11 Years</small><br><br><small style="opacity:0.4">Place photo in photos/ folder<br>Filename: 2021-22.jpg</small></div><div class="photo-caption"><div class="caption-year">2021–22</div><div class="caption-desc">The Return — Pioli's Title after 11 Years</div></div></div></div>
+    <div class="photo-dots" id="photoDots"><div class="dot"></div><div class="dot"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+  </div>
+
+  <!-- HONORS SCROLL (40% width, bigger text) -->
+  <div class="honors-section">
+    <div class="honors-title">Honours</div>
+    <div class="honors-scroll-wrapper">
+      <div class="honors-track" id="honorsTrack" style="--scroll-duration: 43.775s;"><div class="honor-item">
+        <div class="honor-icon">🏆</div>
+        <div class="honor-details">
+          <div class="honor-name">Serie A / Scudetto</div>
+          <div class="honor-years">1901, 1906, 1907, 1951, 1955, 1957, 1959, 1962, 1968, 1979, 1988, 1992, 1993, 1994, 1996, 1999, 2004, 2011, 2022</div>
+        </div>
+        <div class="honor-count">19</div>
+      </div><div class="honor-item">
+        <div class="honor-icon">⭐</div>
+        <div class="honor-details">
+          <div class="honor-name">Champions League</div>
+          <div class="honor-years">1963, 1969, 1989, 1990, 1994, 2003, 2007</div>
+        </div>
+        <div class="honor-count">7</div>
+      </div><div class="honor-item">
+        <div class="honor-icon">🌍</div>
+        <div class="honor-details">
+          <div class="honor-name">Intercontinental Cup / Club World Cup</div>
+          <div class="honor-years">1969, 1989, 1990, 2007</div>
+        </div>
+        <div class="honor-count">4</div>
+      </div><div class="honor-item">
+        <div class="honor-icon">🏅</div>
+        <div class="honor-details">
+          <div class="honor-name">UEFA Super Cup</div>
+          <div class="honor-years">1989, 1990, 1994, 2003, 2007</div>
+        </div>
+        <div class="honor-count">5</div>
+      </div><div class="honor-item">
+        <div class="honor-icon">🥇</div>
+        <div class="honor-details">
+          <div class="honor-name">Coppa Italia</div>
+          <div class="honor-years">1967, 1972, 1973, 1977, 2003</div>
+        </div>
+        <div class="honor-count">5</div>
+      </div><div class="honor-item">
+        <div class="honor-icon">🎖️</div>
+        <div class="honor-details">
+          <div class="honor-name">Supercoppa Italiana</div>
+          <div class="honor-years">1988, 1992, 1993, 1994, 2004, 2011, 2016</div>
+        </div>
+        <div class="honor-count">7</div>
+      </div><div class="honor-item">
+        <div class="honor-icon">🏆</div>
+        <div class="honor-details">
+          <div class="honor-name">Cup Winners' Cup</div>
+          <div class="honor-years">1968, 1973</div>
+        </div>
+        <div class="honor-count">2</div>
+      </div><div class="honor-item">
+        <div class="honor-icon">🏛️</div>
+        <div class="honor-details">
+          <div class="honor-name">Latin Cup</div>
+          <div class="honor-years">1951, 1956</div>
+        </div>
+        <div class="honor-count">2</div>
+      </div><div class="honor-item">
+        <div class="honor-icon">🏆</div>
+        <div class="honor-details">
+          <div class="honor-name">Serie A / Scudetto</div>
+          <div class="honor-years">1901, 1906, 1907, 1951, 1955, 1957, 1959, 1962, 1968, 1979, 1988, 1992, 1993, 1994, 1996, 1999, 2004, 2011, 2022</div>
+        </div>
+        <div class="honor-count">19</div>
+      </div><div class="honor-item">
+        <div class="honor-icon">⭐</div>
+        <div class="honor-details">
+          <div class="honor-name">Champions League</div>
+          <div class="honor-years">1963, 1969, 1989, 1990, 1994, 2003, 2007</div>
+        </div>
+        <div class="honor-count">7</div>
+      </div><div class="honor-item">
+        <div class="honor-icon">🌍</div>
+        <div class="honor-details">
+          <div class="honor-name">Intercontinental Cup / Club World Cup</div>
+          <div class="honor-years">1969, 1989, 1990, 2007</div>
+        </div>
+        <div class="honor-count">4</div>
+      </div><div class="honor-item">
+        <div class="honor-icon">🏅</div>
+        <div class="honor-details">
+          <div class="honor-name">UEFA Super Cup</div>
+          <div class="honor-years">1989, 1990, 1994, 2003, 2007</div>
+        </div>
+        <div class="honor-count">5</div>
+      </div><div class="honor-item">
+        <div class="honor-icon">🥇</div>
+        <div class="honor-details">
+          <div class="honor-name">Coppa Italia</div>
+          <div class="honor-years">1967, 1972, 1973, 1977, 2003</div>
+        </div>
+        <div class="honor-count">5</div>
+      </div><div class="honor-item">
+        <div class="honor-icon">🎖️</div>
+        <div class="honor-details">
+          <div class="honor-name">Supercoppa Italiana</div>
+          <div class="honor-years">1988, 1992, 1993, 1994, 2004, 2011, 2016</div>
+        </div>
+        <div class="honor-count">7</div>
+      </div><div class="honor-item">
+        <div class="honor-icon">🏆</div>
+        <div class="honor-details">
+          <div class="honor-name">Cup Winners' Cup</div>
+          <div class="honor-years">1968, 1973</div>
+        </div>
+        <div class="honor-count">2</div>
+      </div><div class="honor-item">
+        <div class="honor-icon">🏛️</div>
+        <div class="honor-details">
+          <div class="honor-name">Latin Cup</div>
+          <div class="honor-years">1951, 1956</div>
+        </div>
+        <div class="honor-count">2</div>
+      </div></div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="gold-line"></div>
+    <div class="footer-text">Sempre il Milan · Forza Rossoneri</div>
+  </div>
+</div>
+
+<!-- Audio visualizer canvas -->
+<canvas id="audioCanvas" width="2040" height="61"></canvas>
+
+<!-- ============================================================ -->
+<!-- JAVASCRIPT -->
+<!-- ============================================================ -->
+<script>
+// =====================================================
+// CONFIGURATION
+// =====================================================
+
+const PHOTO_SLIDES = [
+  {
+    file: 'photos/1988-89.jpg',
+    year: '1988–89',
+    desc: "Sacchi's Grande Milan — Gullit, Van Basten, Rijkaard"
+  },
+  {
+    file: 'photos/1989-90.jpg',
+    year: '1989–90',
+    desc: 'Back-to-back European Cup Champions'
+  },
+  {
+    file: 'photos/1993-94.jpg',
+    year: '1993–94',
+    desc: 'The Athens Final — 4-0 vs Barcelona'
+  },
+  {
+    file: 'photos/1995-96.jpg',
+    year: '1995–96',
+    desc: "Capello's Invincibles"
+  },
+  {
+    file: 'photos/2002-03.jpg',
+    year: '2002–03',
+    desc: 'Old Trafford — Shevchenko, Pirlo, Maldini'
+  },
+  {
+    file: 'photos/2006-07.jpg',
+    year: '2006–07',
+    desc: "Revenge in Athens — Inzaghi's Brace"
+  },
+  {
+    file: 'photos/2010-11.jpg',
+    year: '2010–11',
+    desc: "Allegri's Scudetto — Ibrahimovic & Thiago Silva"
+  },
+  {
+    file: 'photos/2021-22.jpg',
+    year: '2021–22',
+    desc: "The Return — Pioli's Title after 11 Years"
+  }
+];
+
+const SLIDE_INTERVAL = 8000;
+
+const HONORS = [
+  { icon: '🏆', name: 'Serie A / Scudetto', count: 19,
+    years: '1901, 1906, 1907, 1951, 1955, 1957, 1959, 1962, 1968, 1979, 1988, 1992, 1993, 1994, 1996, 1999, 2004, 2011, 2022' },
+  { icon: '⭐', name: 'Champions League', count: 7,
+    years: '1963, 1969, 1989, 1990, 1994, 2003, 2007' },
+  { icon: '🌍', name: 'Intercontinental Cup / Club World Cup', count: 4,
+    years: '1969, 1989, 1990, 2007' },
+  { icon: '🏅', name: 'UEFA Super Cup', count: 5,
+    years: '1989, 1990, 1994, 2003, 2007' },
+  { icon: '🥇', name: 'Coppa Italia', count: 5,
+    years: '1967, 1972, 1973, 1977, 2003' },
+  { icon: '🎖️', name: 'Supercoppa Italiana', count: 7,
+    years: '1988, 1992, 1993, 1994, 2004, 2011, 2016' },
+  { icon: '🏆', name: "Cup Winners' Cup", count: 2,
+    years: '1968, 1973' },
+  { icon: '🏛️', name: 'Latin Cup', count: 2,
+    years: '1951, 1956' },
+];
+
+const BADGE_IMAGE = 'badge.png';
+
+// =====================================================
+// GOLD PARTICLES
+// =====================================================
+const pCanvas = document.getElementById('particleCanvas');
+const pCtx = pCanvas.getContext('2d');
+let particles = [];
+const PARTICLE_COUNT = 60;
+
+function resizeParticleCanvas() {
+  pCanvas.width = window.innerWidth;
+  pCanvas.height = window.innerHeight;
+}
+resizeParticleCanvas();
+window.addEventListener('resize', resizeParticleCanvas);
+
+function createParticle() {
+  return {
+    x: Math.random() * pCanvas.width,
+    y: Math.random() * pCanvas.height,
+    size: Math.random() * 2 + 0.5,
+    speedX: (Math.random() - 0.5) * 0.3,
+    speedY: -Math.random() * 0.4 - 0.1,
+    opacity: Math.random() * 0.5 + 0.1,
+    flicker: Math.random() * Math.PI * 2
+  };
+}
+for (let i = 0; i < PARTICLE_COUNT; i++) particles.push(createParticle());
+
+function updateParticles(dt) {
+  for (let p of particles) {
+    p.x += p.speedX * dt * 60;
+    p.y += p.speedY * dt * 60;
+    p.flicker += dt * 2;
+    p.opacity = (Math.sin(p.flicker) * 0.3 + 0.4) * 0.5;
+    if (p.y < -10 || p.x < -10 || p.x > pCanvas.width + 10) {
+      p.x = Math.random() * pCanvas.width;
+      p.y = pCanvas.height + 10;
+      p.opacity = 0.1;
+    }
+  }
+}
+
+function drawParticles() {
+  pCtx.clearRect(0, 0, pCanvas.width, pCanvas.height);
+  for (let p of particles) {
+    pCtx.beginPath();
+    pCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+    pCtx.fillStyle = `rgba(201,168,76,${p.opacity})`;
+    pCtx.fill();
+    pCtx.beginPath();
+    pCtx.arc(p.x, p.y, p.size * 3, 0, Math.PI * 2);
+    pCtx.fillStyle = `rgba(201,168,76,${p.opacity * 0.15})`;
+    pCtx.fill();
+  }
+}
+
+// =====================================================
+// PHOTO CAROUSEL
+// =====================================================
+const photoFrame = document.getElementById('photoFrame');
+const photoDots = document.getElementById('photoDots');
+let currentSlide = 0;
+let slideElements = [];
+
+function initPhotoCarousel() {
+  photoFrame.innerHTML = '';
+  photoDots.innerHTML = '';
+
+  PHOTO_SLIDES.forEach((slide, idx) => {
+    const el = document.createElement('div');
+    el.className = 'photo-slide' + (idx === 0 ? ' active' : '');
+
+    const img = document.createElement('img');
+    img.src = slide.file;
+    img.alt = slide.desc;
+    img.onerror = function() {
+      this.remove();
+      const ph = document.createElement('div');
+      ph.className = 'photo-placeholder';
+      ph.innerHTML = `📷<br>${slide.year}<br><small>${slide.desc}</small><br><br><small style="opacity:0.4">Place photo in photos/ folder<br>Filename: ${slide.file.split('/').pop()}</small>`;
+      el.insertBefore(ph, el.firstChild);
+    };
+    el.appendChild(img);
+
+    const caption = document.createElement('div');
+    caption.className = 'photo-caption';
+    caption.innerHTML = `<div class="caption-year">${slide.year}</div><div class="caption-desc">${slide.desc}</div>`;
+    el.appendChild(caption);
+
+    photoFrame.appendChild(el);
+    slideElements.push(el);
+
+    const dot = document.createElement('div');
+    dot.className = 'dot' + (idx === 0 ? ' active' : '');
+    photoDots.appendChild(dot);
+  });
+}
+
+function nextSlide() {
+  slideElements[currentSlide].classList.remove('active');
+  photoDots.children[currentSlide].classList.remove('active');
+  currentSlide = (currentSlide + 1) % PHOTO_SLIDES.length;
+  slideElements[currentSlide].classList.add('active');
+  photoDots.children[currentSlide].classList.add('active');
+}
+
+initPhotoCarousel();
+setInterval(nextSlide, SLIDE_INTERVAL);
+
+// =====================================================
+// HONORS INFINITE SCROLL
+// =====================================================
+function initHonors() {
+  const track = document.getElementById('honorsTrack');
+
+  function buildHonorItems() {
+    let s = '';
+    for (const h of HONORS) {
+      s += `<div class="honor-item">
+        <div class="honor-icon">${h.icon}</div>
+        <div class="honor-details">
+          <div class="honor-name">${h.name}</div>
+          <div class="honor-years">${h.years}</div>
+        </div>
+        <div class="honor-count">${h.count}</div>
+      </div>`;
+    }
+    return s;
+  }
+
+  track.innerHTML = buildHonorItems() + buildHonorItems();
+
+  requestAnimationFrame(() => {
+    const singleHeight = track.scrollHeight / 2;
+    const duration = Math.max(35, singleHeight / 20);
+    track.style.setProperty('--scroll-duration', duration + 's');
+  });
+}
+initHonors();
+
+// =====================================================
+// BADGE IMAGE LOADING
+// =====================================================
+function loadBadge() {
+  const container = document.getElementById('badgeContainer');
+  const placeholder = document.getElementById('badgePlaceholder');
+  const img = new Image();
+  img.src = BADGE_IMAGE;
+  img.onload = function() { placeholder.remove(); container.appendChild(img); };
+
+  const container2 = document.querySelector('.badge-container:last-of-type');
+  const placeholder2 = document.getElementById('badgePlaceholder2');
+  const img2 = new Image();
+  img2.src = BADGE_IMAGE;
+  img2.onload = function() { placeholder2.remove(); container2.appendChild(img2); };
+}
+loadBadge();
+
+// =====================================================
+// AUDIO VISUALIZATION
+// =====================================================
+const audioCanvas = document.getElementById('audioCanvas');
+const audioCtx = audioCanvas.getContext('2d');
+let smoothedAudio = new Array(128).fill(0);
+
+function resizeAudioCanvas() {
+  audioCanvas.width = window.innerWidth;
+  audioCanvas.height = Math.round(window.innerHeight * 0.06);
+}
+resizeAudioCanvas();
+window.addEventListener('resize', resizeAudioCanvas);
+
+function wallpaperAudioListener(audioArray) {
+  for (let i = 0; i < 128; i++) {
+    smoothedAudio[i] = smoothedAudio[i] * 0.75 + Math.min(audioArray[i], 1) * 0.25;
+  }
+  audioCtx.clearRect(0, 0, audioCanvas.width, audioCanvas.height);
+
+  const barCount = 64;
+  const barW = audioCanvas.width / (barCount * 2);
+  const centerX = audioCanvas.width / 2;
+
+  for (let i = 0; i < barCount; i++) {
+    const val = smoothedAudio[i];
+    const h = val * audioCanvas.height * 0.9;
+    const r = 201, g = Math.floor(120 + val * 80), b = Math.floor(40 + (i / barCount) * 30);
+    audioCtx.fillStyle = `rgba(${r},${g},${b},${0.4 + val * 0.5})`;
+    audioCtx.fillRect(centerX - (i + 1) * barW, audioCanvas.height - h, barW - 1, h);
+    audioCtx.fillRect(centerX + i * barW, audioCanvas.height - h, barW - 1, h);
+  }
+}
+
+if (window.wallpaperRegisterAudioListener) {
+  window.wallpaperRegisterAudioListener(wallpaperAudioListener);
+}
+
+// =====================================================
+// FPS LIMITER & MAIN LOOP
+// =====================================================
+const wallpaperSettings = { fps: 0 };
+
+window.wallpaperPropertyListener = {
+  applyGeneralProperties: function(properties) {
+    if (properties.fps) wallpaperSettings.fps = properties.fps;
+  },
+  applyUserProperties: function(properties) {
+    if (properties.accentcolor) {
+      const rgb = properties.accentcolor.value.split(' ').map(c => Math.ceil(c * 255));
+      document.documentElement.style.setProperty('--oro', `rgb(${rgb.join(',')})`);
+    }
+    if (properties.particledensity) {
+      const target = Math.floor(properties.particledensity.value);
+      while (particles.length < target) particles.push(createParticle());
+      while (particles.length > target) particles.pop();
+    }
+  }
+};
+
+let lastTime = performance.now() / 1000;
+let fpsThreshold = 0;
+
+function mainLoop() {
+  window.requestAnimationFrame(mainLoop);
+  const now = performance.now() / 1000;
+  const dt = Math.min(now - lastTime, 0.1);
+  lastTime = now;
+
+  if (wallpaperSettings.fps > 0) {
+    fpsThreshold += dt;
+    if (fpsThreshold < 1.0 / wallpaperSettings.fps) return;
+    fpsThreshold -= 1.0 / wallpaperSettings.fps;
+  }
+
+  updateParticles(dt);
+  drawParticles();
+}
+
+window.requestAnimationFrame(mainLoop);
+</script>
+
+
+</body></html>

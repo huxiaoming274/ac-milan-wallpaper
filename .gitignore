@@ -1,0 +1,14 @@
+# User-provided media (copyrighted, do not commit)
+badge.png
+preview.jpg
+photos/*.jpg
+photos/*.jpeg
+photos/*.png
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Wallpaper Engine project copies
+*.bak
