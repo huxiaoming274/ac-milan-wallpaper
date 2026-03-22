@@ -79,7 +79,7 @@ ac-milan-wallpaper/
 1. **Clone or download** this repository
 
    ```bash
-   git clone https://github.com/YOUR_USERNAME/ac-milan-wallpaper.git
+   git clone https://github.com/huxiaoming274/ac-milan-wallpaper.git
    ```
 
 2. **Add your own media files** (not included due to copyright):
