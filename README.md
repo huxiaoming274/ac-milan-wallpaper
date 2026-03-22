@@ -21,16 +21,16 @@ A stunning animated desktop wallpaper celebrating **AC Milan's glorious history*
 
 ## 🏆 Honours Displayed
 
-| Competition | Count | Trophy Icon |
-|---|---|---|
-| Champions League | 7 | Big Ears Cup |
-| Serie A / Scudetto | 19 | Shield |
-| Intercontinental Cup / Club World Cup | 4 | Globe |
-| UEFA Super Cup | 5 | Super Cup |
-| Cup Winners' Cup | 2 | Classic Cup |
-| Coppa Italia | 5 | Italian Cup |
-| Supercoppa Italiana | 7 | Star Cup |
-| Latin Cup | 2 | Hexagonal Medal |
+| Competition                           | Count | Trophy Icon     |
+| ------------------------------------- | ----- | --------------- |
+| Champions League                      | 7     | Big Ears Cup    |
+| Serie A / Scudetto                    | 19    | Shield          |
+| Intercontinental Cup / Club World Cup | 4     | Globe           |
+| UEFA Super Cup                        | 5     | Super Cup       |
+| Cup Winners' Cup                      | 2     | Classic Cup     |
+| Coppa Italia                          | 5     | Italian Cup     |
+| Supercoppa Italiana                   | 7     | Star Cup        |
+| Latin Cup                             | 2     | Hexagonal Medal |
 
 All trophy icons are hand-drawn SVG in a unified gold wireframe style.
 
@@ -38,16 +38,9 @@ All trophy icons are hand-drawn SVG in a unified gold wireframe style.
 
 ## 📸 Demo
 
-> *Screenshots coming soon — feel free to submit yours via PR!*
+[![AC Milan Wallpaper Demo](https://img.youtube.com/vi/LgbcvUa3PS0/maxresdefault.jpg)](https://youtu.be/LgbcvUa3PS0)
 
-<!-- 
-To add screenshots:
-1. Take a screenshot of the wallpaper running on your desktop
-2. Save it to demo/ folder
-3. Uncomment below:
-
-![AC Milan Wallpaper Demo](demo/screenshot-01.png)
--->
+▶️ **[Watch on YouTube](https://youtu.be/LgbcvUa3PS0)**
 
 ---
 
@@ -86,14 +79,16 @@ ac-milan-wallpaper/
 1. **Clone or download** this repository
 
    ```bash
-   git clone https://github.com/huxiaoming274/ac-milan-wallpaper.git
+   git clone https://github.com/YOUR_USERNAME/ac-milan-wallpaper.git
    ```
 
 2. **Add your own media files** (not included due to copyright):
+
    - `badge.png` — AC Milan badge (PNG, transparent background, 512×512+ recommended)
    - `photos/*.jpg` — Squad photos for each era (any resolution, the frame auto-adapts)
 
 3. **Import into Wallpaper Engine**:
+
    - Open Wallpaper Engine Editor
    - Drag `index.html` onto the **"Create Wallpaper"** button
    - Done!
@@ -104,9 +99,9 @@ ac-milan-wallpaper/
 
 ### Via Wallpaper Engine Settings
 
-| Setting | Description |
-|---|---|
-| **Gold Accent Color** | Change the gold to any color you like |
+| Setting                   | Description                             |
+| ------------------------- | --------------------------------------- |
+| **Gold Accent Color**     | Change the gold to any color you like   |
 | **Gold Particle Density** | Adjust floating particle count (10–200) |
 
 ### Via Code
@@ -126,12 +121,12 @@ const PHOTO_SLIDES = [
 
 Other configurable constants:
 
-| Constant | Default | Description |
-|---|---|---|
-| `SLIDE_INTERVAL` | `8000` | Photo rotation interval in ms |
-| `PARTICLE_COUNT` | `60` | Default gold particle count |
-| `HONORS` | Full list | Honours with SVG icons and years |
-| `BADGE_IMAGE` | `badge.png` | Path to badge file |
+| Constant         | Default     | Description                      |
+| ---------------- | ----------- | -------------------------------- |
+| `SLIDE_INTERVAL` | `8000`      | Photo rotation interval in ms    |
+| `PARTICLE_COUNT` | `60`        | Default gold particle count      |
+| `HONORS`         | Full list   | Honours with SVG icons and years |
+| `BADGE_IMAGE`    | `badge.png` | Path to badge file               |
 
 ---
 
@@ -181,3 +176,4 @@ PRs welcome! Some ideas:
   <strong>Forza Milan! 🔴⚫</strong><br>
   <em>Made with ❤️ by a Rossonero</em>
 </p>
+
